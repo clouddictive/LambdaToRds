@@ -1,0 +1,158 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.mylambdards</groupId>
+  <artifactId>LambdaToRds</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <properties>
+		<spring.version>3.0.5.RELEASE</spring.version>
+		<jdk.version>1.8</jdk.version>
+  </properties>
+  
+  <dependencies>
+  
+  <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>5.1.39</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-core</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-tx</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+
+
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-test</artifactId>
+    <version>${spring.version}</version>
+</dependency>
+
+
+<!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-mapper-asl -->
+<dependency>
+    <groupId>org.codehaus.jackson</groupId>
+    <artifactId>jackson-mapper-asl</artifactId>
+    <version>1.9.13</version>
+</dependency>
+
+
+
+
+<!-- https://mvnrepository.com/artifact/junit/junit -->
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.12</version>
+</dependency>
+
+
+<dependency>
+    <groupId>com.amazonaws</groupId>
+    <artifactId>aws-lambda-java-core</artifactId>
+    <version>1.1.0</version>
+</dependency>
+
+  </dependencies>
+  
+  <build>
+  <plugins>
+	  		<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-jar-plugin</artifactId>
+			    <configuration>
+			        <archive>
+			            <manifest>
+			                <addClasspath>true</addClasspath>
+			                <classpathPrefix>lib/</classpathPrefix>
+			            </manifest>
+			        </archive>
+			    </configuration>
+			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-dependency-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>copy-dependencies</id>
+			            <phase>prepare-package</phase>
+			            <goals>
+			                <goal>copy-dependencies</goal>
+			            </goals>
+			            <configuration>
+			                <outputDirectory>${project.build.directory}/classes/lib</outputDirectory>
+			                <overWriteReleases>false</overWriteReleases>
+			                <overWriteSnapshots>false</overWriteSnapshots>
+			                <overWriteIfNewer>true</overWriteIfNewer>
+			            </configuration>
+			        </execution>
+			    </executions>
+			</plugin>
+ 	
+ 	         <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <attachClasses>true</attachClasses>
+                    <classesClassifier>classes</classesClassifier>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <buildNumber>${project.version}_${buildNumber}</buildNumber>
+                        </manifestEntries>
+                    </archive>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/resources</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+ 	          <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+                       <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+          
+  </plugins>
+  </build>
+</project>
