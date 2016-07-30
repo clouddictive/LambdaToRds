@@ -41,4 +41,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return json;
 	}
 
+	@Override
+	public Employee getEmployeeObject(int id) {
+		return employeeRepo.getEmployee(id);
+	}
+
 }
